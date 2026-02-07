@@ -1,0 +1,85 @@
+import java.util.*;
+import java.io.*;
+
+public class StudentManager {
+
+    static Scanner input = new Scanner(System.in);
+    static String fileName = "students.txt";
+
+    public static void main(String[] args) {
+
+        while (true) {
+
+            System.out.println("\n===== Student Manager =====");
+            System.out.println("1. Add student");
+            System.out.println("2. View students");
+            System.out.println("3. Exit");
+            System.out.print("Choose: ");
+
+            int choice = input.nextInt();
+            input.nextLine(); // clear buffer
+
+            if (choice == 1) {
+                addStudent();
+            }
+            else if (choice == 2) {
+                viewStudents();
+            }
+            else if (choice == 3) {
+                System.out.println("Goodbye!");
+                break;
+            }
+            else {
+                System.out.println("Invalid option");
+            }
+        }
+    }
+
+    // Add student and save to file
+    public static void addStudent() {
+
+        try {
+            System.out.print("Enter name: ");
+            String name = input.nextLine();
+
+            System.out.print("Enter age: ");
+            int age = input.nextInt();
+            input.nextLine();
+
+            FileWriter writer = new FileWriter(fileName, true);
+            writer.write(name + "," + age + "\n");
+            writer.close();
+
+            System.out.println("Student saved successfully!");
+        }
+        catch (Exception e) {
+            System.out.println("Error saving student.");
+        }
+    }
+
+    // Read students from file
+    public static void viewStudents() {
+
+        try {
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                System.out.println("No students yet.");
+                return;
+            }
+
+            Scanner reader = new Scanner(file);
+
+            System.out.println("\n--- Student List ---");
+
+            while (reader.hasNextLine()) {
+                System.out.println(reader.nextLine());
+            }
+
+            reader.close();
+        }
+        catch (Exception e) {
+            System.out.println("Error reading file.");
+        }
+    }
+}
